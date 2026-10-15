@@ -23,6 +23,7 @@ button.primary { background: var(--accent); color: var(--accent-ink); border-col
 header.top button { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.4); }
 header.top button:hover { background: rgba(255,255,255,.25); }
 button.danger { color: #a02020; }
+button.small { padding: 2px 8px; font-size: 12px; }
 main { display: grid; grid-template-columns: minmax(340px, 440px) 1fr; gap: 12px; padding: 12px; align-items: start; }
 main > * { min-width: 0; }
 @media (max-width: 1000px) { main { grid-template-columns: 1fr; } }
@@ -36,9 +37,11 @@ main > * { min-width: 0; }
 .tabs .badge.auto { background: var(--ok-bg); color: var(--ok-ink); }
 .tabs .badge.off { background: #eee; color: #999; }
 .form { padding: 12px 14px 16px; }
-.form h3 { font-size: 14px; margin: 16px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--line); color: var(--accent); }
+.form h3 { font-size: 14px; margin: 16px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--line); color: var(--accent);
+  display: flex; justify-content: space-between; align-items: center; gap: 6px; }
 .form h3:first-child { margin-top: 0; }
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 10px; }
+.grid.g3 { grid-template-columns: 1fr 1.3fr 2fr; }
 .grid .full { grid-column: 1 / -1; }
 label.f { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--muted); min-width: 0; }
 input, select, textarea { font: inherit; font-size: 14px; color: var(--ink); background: var(--input);
@@ -55,35 +58,75 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
 .warns li { background: var(--warn-bg); color: var(--warn-ink); border-radius: 4px; padding: 6px 10px; margin: 0 0 6px; font-size: 13px; }
 .warns li.ok { background: var(--ok-bg); color: var(--ok-ink); }
 .preview-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); }
-.preview-bar .sp { flex: 1; }
+.preview-bar .src { font-size: 12px; color: var(--muted); margin-left: auto; }
 .preview { padding: 16px; overflow-x: auto; background: #d9dde3; border-radius: 0 0 6px 6px; }
 .status { padding: 8px 12px 0; }
 
-/* ---------- A4 서식 ---------- */
+/* ---------- A4 서식 (경찰수사규칙·범죄수사규칙 별지 서식 재현) ---------- */
 .page { width: 210mm; min-height: 297mm; margin: 0 auto 16px; background: #fff; color: #000;
-  padding: 18mm 18mm 16mm; box-shadow: 0 1px 4px rgba(0,0,0,.25);
-  font-family: "바탕", "Batang", "함초롬바탕", "HCR Batang", "Noto Serif KR", serif; font-size: 11pt; line-height: 1.6; }
-.page .form-no { font-size: 9pt; margin-bottom: 6mm; }
-.page h2 { text-align: center; font-size: 22pt; letter-spacing: 10px; margin: 4mm 0 8mm; font-weight: bold; }
+  padding: 15mm 17mm 12mm; box-shadow: 0 1px 4px rgba(0,0,0,.25); display: flex; flex-direction: column;
+  font-family: "함초롬바탕", "HCR Batang", "바탕", "Batang", "Noto Serif KR", serif; font-size: 11.5pt; line-height: 1.75; }
+.page .formno { font-family: "Malgun Gothic", "돋움", sans-serif; font-size: 8.5pt; margin-bottom: 7mm; }
+.page h2 { text-align: center; font-size: 17pt; margin: 0 0 6mm; font-weight: bold; letter-spacing: 3px; }
 .page table { width: 100%; border-collapse: collapse; }
-.page td, .page th { border: 1px solid #000; padding: 2.2mm 2mm; vertical-align: middle; font-weight: normal; word-break: keep-all; overflow-wrap: anywhere; }
-.page th { background: #f2f2f2; text-align: center; }
+.page td, .page th { border: 1px solid #000; padding: 1mm 1.5mm; vertical-align: middle; font-weight: normal;
+  word-break: keep-all; overflow-wrap: anywhere; text-align: left; }
+.page th { text-align: center; }
 .page .c { text-align: center; }
 .page .r { text-align: right; }
-.page .body-text { text-indent: 1em; margin: 0 0 4mm; text-align: justify; }
-.page .box { border: 1px solid #000; padding: 4mm; min-height: 80mm; white-space: pre-wrap; text-align: justify; }
-.page .date { text-align: center; margin: 10mm 0 6mm; font-size: 12pt; letter-spacing: 1px; }
-.page .sign { margin-left: auto; width: 70%; }
-.page .sign div { display: flex; justify-content: flex-end; gap: 4mm; margin: 2mm 0; }
-.page .sign .seal { display: inline-block; width: 14mm; text-align: center; }
-.page .to { font-size: 13pt; font-weight: bold; margin-top: 10mm; }
-.page .blank { color: #999; }
-.page .empty-row td { height: 9mm; }
-.page .note { font-size: 9pt; color: #444; margin-top: 4mm; }
-.page .ck { font-family: "Malgun Gothic", sans-serif; }
-.page.void { position: relative; }
-.page.void::after { content: "작성 대상 아님"; position: absolute; top: 40%; left: 0; right: 0; text-align: center;
-  font-size: 40pt; color: rgba(200,0,0,.18); transform: rotate(-20deg); font-family: sans-serif; pointer-events: none; }
+.page .blank { color: #aaa; }
+.page .foot { margin-top: auto; padding-top: 1mm; border-top: 1px solid #000; text-align: right; font-size: 7.5pt;
+  font-family: "Malgun Gothic", "돋움", sans-serif; }
+.page .seal { display: inline-block; margin-left: 3mm; }
+.page .small { font-size: 9pt; }
+/* 열린 표(좌우 바깥선 없음) */
+.page table.open { border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; }
+.page table.open td, .page table.open th { border: 1px solid #555; }
+.page table.open tr > :first-child { border-left: none; }
+.page table.open tr > :last-child { border-right: none; }
+/* 66호 */
+.p66 .lead { border-top: 1.5px solid #000; padding: 2mm 3mm; text-align: justify; margin: 0; line-height: 2; }
+.p66 .bar { border-top: 1px solid #555; border-bottom: 1px solid #555; text-align: center; letter-spacing: 9mm; padding: 1mm 0; }
+.p66 .narr { flex: 1; min-height: 95mm; padding: 3mm 3mm; white-space: pre-wrap; text-align: justify; line-height: 1.9; }
+.p66 .wt td, .p66 .wt th { height: 9.5mm; }
+.p66 .when { text-align: center; margin: 4mm 0 1mm; }
+.p66 .agency { text-align: center; font-size: 13pt; margin-left: 10%; }
+.p66 .signs { text-align: right; padding-right: 6mm; line-height: 2.1; margin-bottom: 4mm; }
+/* 67호 */
+.p67 h2 { font-size: 18pt; letter-spacing: 8px; margin-bottom: 7mm; }
+.p67 table { border-top: 1.5px solid #000; border-bottom: 1.5px solid #000; }
+.p67 th { background: #fff7c2; }
+.p67 td, .p67 th { border-color: #777; font-size: 10.5pt; }
+.p67 tr > :first-child { border-left: none; } .p67 tr > :last-child { border-right: none; }
+.p67 td.lb { width: 13mm; text-align: center; font-size: 9pt; white-space: nowrap; letter-spacing: -0.5px; }
+.p67 td.vl { font-size: 8pt; line-height: 1.25; }
+.p67 td { line-height: 1.3; }
+.p67 tr.row td { height: 8.6mm; padding-top: .5mm; padding-bottom: .5mm; }
+.p67 thead th { white-space: nowrap; padding: 1.5mm .5mm; }
+.p67 tbody.it tr:first-child td { border-top: 1.5px solid #000; }
+/* 68호 */
+.p68 h2 { font-size: 16pt; letter-spacing: 1px; margin: 3mm 0 2mm; }
+.p68 .meta { display: flex; justify-content: space-between; padding: 0 2mm; }
+.p68 .line { padding: 0 1mm; line-height: 2; }
+.p68 .lead { border-top: 1.5px solid #000; margin: 1mm 0 0; padding: 1mm 1mm; text-align: justify; }
+.p68 table.open td { height: 8.4mm; }
+.p68 .agency { text-align: center; font-size: 13pt; margin: 5mm 0 4mm; }
+.p68 .sign { text-align: right; padding-right: 16mm; margin-bottom: 6mm; }
+/* 60호·62호 */
+.p60 h2, .p62 h2 { font-size: 16pt; letter-spacing: 2px; margin-bottom: 3mm; }
+.p62 h2 { letter-spacing: 6px; }
+.p60 .sec, .p62 .sec { margin: 0 0 1mm; }
+.p60 .who td, .p62 .who td { height: 9mm; }
+.p60 .who td.lb, .p62 .who td.lb { width: 22mm; text-align: center; letter-spacing: 4mm; }
+.p60 .who td.lb2, .p62 .who td.lb2 { width: 25mm; text-align: center; font-size: 9.5pt; white-space: nowrap; }
+.p60 .stmt, .p62 .stmt { margin: 5mm 1mm 3mm; text-align: justify; line-height: 1.9; }
+.p60 .when, .p62 .when { text-align: center; margin: 2mm 0; }
+.p60 .by, .p62 .by { text-align: right; padding-right: 8mm; margin: 2mm 0 5mm; letter-spacing: 1.5mm; }
+.p60 .tb td, .p62 .tb td { height: 9.6mm; }
+.p60 .to, .p62 .to { text-align: center; font-size: 15pt; margin: 9mm 0 6mm; }
+.p60 .to b, .p62 .to b { letter-spacing: 1mm; }
+.page.void { position: relative; justify-content: center; }
+.page.void p { text-align: center; color: #666; }
 
 @media screen and (max-width: 1500px) { .preview .page { zoom: .8; } }
 @media screen and (max-width: 1250px) { .preview .page { zoom: .65; } }
@@ -91,19 +134,21 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
 @media print {
   @page { size: A4; margin: 0; }
   body { background: #fff; }
-  header.top, .no-print, .panel.inputs, .tabs, .preview-bar, .status { display: none !important; }
+  header.top, .panel.inputs, .tabs, .preview-bar, .status { display: none !important; }
   main { display: block; padding: 0; }
   .panel { border: none; }
   .preview { padding: 0; background: #fff; }
-  .page { margin: 0; box-shadow: none; page-break-after: always; break-after: page; }
+  .page { margin: 0; box-shadow: none; min-height: 296mm; page-break-after: always; break-after: page; }
   .page:last-child { page-break-after: auto; break-after: auto; }
   .page.void { display: none; }
+  .page .blank { color: transparent; }
+  .p67 th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 </style>
 </head>
 <body>
 <header class="top">
-  <h1>압수서류 자동작성기 <small style="font-weight:normal;opacity:.8">— 압수조서·압수목록 입력 → 교부서·임의제출서·소유권포기서 자동 작성</small></h1>
+  <h1>압수서류 자동작성기 <small style="font-weight:normal;opacity:.8">— 압수조서·압수목록 입력 → 교부서·임의제출·소유권 포기서 자동 작성</small></h1>
   <div class="btns">
     <button id="btnNew">새 사건</button>
     <button id="btnSample">예시 불러오기</button>
@@ -125,21 +170,19 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
       <h3>사건·관서</h3>
       <div class="grid">
         <label class="f">소속관서<input data-k="jo.agency" placeholder="예: 서울양천경찰서"></label>
-        <label class="f">부서<input data-k="jo.dept" placeholder="예: 형사과"></label>
-        <label class="f">사건번호(선택)<input data-k="jo.caseNo" placeholder="예: 2026-001234"></label>
+        <label class="f">소속관서장(수신)<input data-k="jo.chief" placeholder="비우면 '소속관서+장'"></label>
+        <label class="f">피의자 성명<input data-k="jo.suspect"></label>
+        <label class="f">외 ○명<input type="number" min="0" data-k="jo.suspectOthers" placeholder="0"></label>
         <label class="f">죄명<input data-k="jo.crime" placeholder="예: 절도"></label>
+        <label class="f">사건 구분
+          <select data-k="jo.caseType"><option value="피의">피의사건</option><option value="혐의">혐의사건(입건 전)</option></select></label>
+        <label class="f">사건번호<input data-k="jo.caseNo" placeholder="예: 2026-001234"></label>
+        <label class="f">교부서 문서번호(제 ○ 호)<input data-k="jo.docNo" placeholder="예: 2026-00123"></label>
+        <label class="f">압수번호<input data-k="jo.seizureNo"></label>
+        <label class="f">접수번호<input data-k="jo.receiptNo"></label>
       </div>
 
-      <h3>피의자</h3>
-      <div class="grid">
-        <label class="f">성명<input data-k="jo.suspect.name"></label>
-        <label class="f">주민등록번호<input data-k="jo.suspect.rrn" placeholder="000000-0000000"></label>
-        <label class="f full">주소<input data-k="jo.suspect.addr"></label>
-        <label class="f">연락처<input data-k="jo.suspect.phone"></label>
-        <label class="f">직업<input data-k="jo.suspect.job"></label>
-      </div>
-
-      <h3>압수 일시·장소·방법</h3>
+      <h3>압수 일시·장소·근거</h3>
       <div class="grid">
         <label class="f">압수일시<input type="datetime-local" data-k="jo.datetime"></label>
         <label class="f">압수 근거
@@ -154,34 +197,37 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
         <label class="f full">압수장소<input data-k="jo.place" placeholder="예: 서울 양천구 목동서로 130 앞 노상"></label>
       </div>
 
-      <h3>압수자·참여자</h3>
+      <h3>압수자·참여 경찰관</h3>
       <div class="grid">
-        <label class="f">압수자 계급
-          <select data-k="jo.officer.rank"></select></label>
+        <label class="f">압수자 계급<select data-k="jo.officer.rank"></select></label>
         <label class="f">압수자 성명<input data-k="jo.officer.name"></label>
-        <label class="f">참여자 계급
-          <select data-k="jo.part.rank"></select></label>
-        <label class="f">참여자 성명<input data-k="jo.part.name"></label>
+        <label class="f">참여 경찰관 계급<select data-k="jo.part.rank"></select></label>
+        <label class="f">참여 경찰관 성명<input data-k="jo.part.name"></label>
       </div>
 
       <h3>압수 경위</h3>
       <textarea data-k="jo.narrative" rows="9" placeholder="압수 경위를 작성하세요. [경위 초안 만들기]를 누르면 입력한 내용으로 초안이 들어갑니다."></textarea>
-      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center">
         <button id="btnDraft">경위 초안 만들기</button>
         <span class="hint">초안은 반드시 실제 경위에 맞게 고쳐 쓰세요.</span>
       </div>
 
+      <h3>참여인 (압수조서 하단 표) <button class="small" id="btnWitFill">압수목록 소지자로 채우기</button></h3>
+      <div id="witnesses"></div>
+
       <h3>작성</h3>
       <div class="grid">
         <label class="f">작성일<input type="date" data-k="jo.writeDate"></label>
-        <label class="f">수신(관서장)<input data-k="jo.chief" placeholder="예: 서울양천경찰서장"></label>
       </div>
     </div>
 
     <div class="form" id="in-mok" hidden>
-      <p class="hint" style="margin-top:0">압수물 1건마다 소지자(제출자)와 소유자를 입력합니다. 이 내용이 교부서·임의제출서·소유권포기서에 그대로 들어갑니다.</p>
+      <p class="hint" style="margin-top:0">압수물마다 소지자(제출자)와 소유자를 입력합니다. 이 내용이 압수목록 교부서·임의제출·소유권 포기서에 그대로 들어갑니다.</p>
       <div id="items"></div>
       <button class="primary" id="btnAddItem">+ 압수물 추가</button>
+      <datalist id="disposalList">
+        <option value="반환 희망"><option value="가환부 희망"><option value="반환 불요(소유권 포기)"><option value="폐기 동의">
+      </datalist>
     </div>
   </section>
 
@@ -192,9 +238,9 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
     <div class="preview-bar">
       <button class="primary" id="btnPrint">이 서류 인쇄</button>
       <button id="btnPrintAll">전체 인쇄</button>
-      <button id="btnDoc">이 서류 저장(.doc, 한글에서 열기)</button>
+      <button id="btnDoc">이 서류 저장(.doc)</button>
       <button id="btnDocAll">전체 저장(.doc)</button>
-      <span class="sp"></span>
+      <span class="src" id="srcNote"></span>
     </div>
     <div class="preview" id="preview"></div>
   </section>
@@ -205,40 +251,41 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   "use strict";
 
   var RANKS = ["순경", "경장", "경사", "경위", "경감", "경정", "총경"];
-  var STORE_KEY = "seizure-docs-v1";
+  var STORE_KEY = "seizure-docs-v2";
 
-  function blankPerson() { return { name: "", rrn: "", addr: "", phone: "" }; }
+  function blankPerson() { return { name: "", rrn: "", job: "", phone: "", addr: "" }; }
+  function blankWitness() { return { name: "", rrn: "", addr: "" }; }
   function blankItem() {
-    return { name: "", qty: "1", feature: "", holder: blankPerson(), ownerSame: true, owner: blankPerson(),
-      opinion: "", note: "", waive: false, waiveConfirmed: false };
+    return { name: "", qty: "", feature: "", holder: blankPerson(), ownerSame: true, owner: blankPerson(),
+      opinion: "", note: "", disposal: "", waive: false, waiveConfirmed: false };
+  }
+  function todayStr() {
+    var d = new Date(), p = function (n) { return String(n).padStart(2, "0"); };
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
   }
   function blankState() {
-    var now = new Date();
-    var pad = function (n) { return String(n).padStart(2, "0"); };
-    var today = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
     return {
       jo: {
-        agency: "", dept: "", caseNo: "", crime: "", chief: "",
-        suspect: { name: "", rrn: "", addr: "", phone: "", job: "" },
+        agency: "", chief: "", suspect: "", suspectOthers: "", crime: "", caseType: "피의",
+        caseNo: "", docNo: "", seizureNo: "", receiptNo: "",
         datetime: "", place: "", method: "임의제출",
         officer: { rank: "경위", name: "" }, part: { rank: "경사", name: "" },
-        narrative: "", writeDate: today
+        narrative: "", witnesses: [blankWitness(), blankWitness(), blankWitness()], writeDate: todayStr()
       },
       items: [blankItem()]
     };
   }
   function sampleState() {
-    var p = { name: "김철수", rrn: "900101-1******", addr: "서울 양천구 목동동로 000, 000동 000호", phone: "010-0000-0000" };
+    var p = { name: "김철수", rrn: "900101-1******", job: "무직", phone: "010-0000-0000", addr: "서울 양천구 목동동로 000, 000동 000호" };
     var s = blankState();
-    s.jo = {
-      agency: "서울양천경찰서", dept: "형사과", caseNo: "2026-001234", crime: "절도", chief: "서울양천경찰서장",
-      suspect: { name: p.name, rrn: p.rrn, addr: p.addr, phone: p.phone, job: "무직" },
+    Object.assign(s.jo, {
+      agency: "서울양천경찰서", suspect: "김철수", crime: "절도", caseType: "피의", caseNo: "2026-001234", docNo: "2026-00123",
       datetime: "2026-10-12T12:00", place: "서울 양천구 목동서로 130 앞 노상", method: "임의제출",
-      officer: { rank: "경위", name: "홍길동" }, part: { rank: "경위", name: "이몽룡" },
-      narrative: "", writeDate: "2026-10-12"
-    };
-    s.items = [{ name: "자전거", qty: "1대", feature: "흰색, 제조사 미상", holder: p, ownerSame: true, owner: blankPerson(),
-      opinion: "증거물로 보관", note: "임의제출", waive: false, waiveConfirmed: false }];
+      officer: { rank: "경위", name: "홍길동" }, part: { rank: "경위", name: "이몽룡" }, writeDate: "2026-10-12"
+    });
+    s.jo.witnesses[0] = { name: p.name, rrn: p.rrn, addr: p.addr };
+    s.items = [Object.assign(blankItem(), { name: "자전거", qty: "1대", feature: "흰색, 제조사 미상", holder: Object.assign({}, p),
+      opinion: "피해자 환부", note: "임의제출", disposal: "반환 의사 없음" })];
     s.jo.narrative = draftNarrative(s);
     return s;
   }
@@ -255,10 +302,13 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   function normalize(s) {
     var b = blankState();
     if (!s || typeof s !== "object") return b;
-    s.jo = Object.assign(b.jo, s.jo || {});
-    s.jo.suspect = Object.assign(blankState().jo.suspect, s.jo.suspect || {});
-    s.jo.officer = Object.assign({ rank: "경위", name: "" }, s.jo.officer || {});
-    s.jo.part = Object.assign({ rank: "경사", name: "" }, s.jo.part || {});
+    var jo = Object.assign(b.jo, s.jo || {});
+    if (jo.suspect && typeof jo.suspect === "object") jo.suspect = jo.suspect.name || ""; // 이전 버전 사건 파일 호환
+    jo.officer = Object.assign({ rank: "경위", name: "" }, jo.officer || {});
+    jo.part = Object.assign({ rank: "경사", name: "" }, jo.part || {});
+    var w = Array.isArray(jo.witnesses) ? jo.witnesses : [];
+    jo.witnesses = [0, 1, 2].map(function (i) { return Object.assign(blankWitness(), w[i] || {}); });
+    s.jo = jo;
     s.items = (Array.isArray(s.items) && s.items.length ? s.items : [blankItem()]).map(function (it) {
       var x = Object.assign(blankItem(), it);
       x.holder = Object.assign(blankPerson(), it.holder || {});
@@ -269,258 +319,289 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   }
 
   // ---------- 유틸 ----------
-  function esc(v) {
-    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+  function esc(x) {
+    return String(x == null ? "" : x).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
-  function getPath(obj, path) { return path.split(".").reduce(function (o, k) { return o == null ? o : o[k]; }, obj); }
-  function setPath(obj, path, val) {
+  function getPath(o, path) { return path.split(".").reduce(function (a, k) { return a == null ? a : a[k]; }, o); }
+  function setPath(o, path, val) {
     var ks = path.split("."), last = ks.pop();
-    var o = ks.reduce(function (o, k) { return o[k]; }, obj);
-    o[last] = val;
+    ks.reduce(function (a, k) { return a[k]; }, o)[last] = val;
   }
-  function v(x, ph) { return x && String(x).trim() ? esc(x) : '<span class="blank">' + esc(ph || "　　　　") + "</span>"; }
-  function fmtDateTime(dt) {
-    if (!dt) return "";
-    var m = dt.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
-    if (!m) return dt;
-    var s = m[1] + ". " + (+m[2]) + ". " + (+m[3]) + ".";
-    if (m[4]) s += " " + m[4] + ":" + m[5] + "경";
-    return s;
+  // 값이 있으면 그대로, 없으면 서식의 자리표시(회색, 인쇄 시 안 보임)
+  function v(x, ph) { return x && String(x).trim() ? esc(x) : '<span class="blank">' + esc(ph || "") + "</span>"; }
+  // 받침에 따라 조사 선택: josa("홍길동", "은", "는") → "은"
+  function josa(word, a, b) {
+    var w = String(word || "").trim(); if (!w) return a;
+    var code = w.charCodeAt(w.length - 1) - 0xAC00;
+    if (code < 0 || code > 11171) return a + "(" + b + ")";
+    var jong = code % 28;
+    if (a === "으로") return jong === 0 || jong === 8 ? b : a;
+    return jong ? a : b;
   }
-  function fmtDate(d) {
-    var m = (d || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
-    return m ? m[1] + ". " + (+m[2]) + ". " + (+m[3]) + "." : "20　　.　　.　　.";
+  function fmtDT(dt) {
+    var m = (dt || "").match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+    if (!m) return "";
+    return m[1] + ". " + m[2] + ". " + m[3] + "." + (m[4] ? " " + m[4] + ":" + m[5] : "");
+  }
+  function fmtD(d) { var m = (d || "").match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? m[1] + ". " + m[2] + ". " + m[3] + "." : ""; }
+  function title(rank) { return ["경위", "경감", "경정", "총경"].indexOf(rank) >= 0 ? "사법경찰관" : "사법경찰리"; }
+  function chief() { var j = state.jo; return j.chief || (j.agency ? j.agency + "장" : ""); }
+  function suspects() {
+    var j = state.jo, n = parseInt(j.suspectOthers, 10);
+    return (j.suspect || "") + (j.suspect && n > 0 ? " 외 " + n + "명" : "");
   }
   function ownerOf(it) { return it.ownerSame ? it.holder : it.owner; }
   function personKey(p) { return (p.name || "").trim() + "|" + (p.rrn || "").trim(); }
   function groupBy(items, getP) {
     var map = {}, order = [];
-    items.forEach(function (it, i) {
+    items.forEach(function (it) {
       var p = getP(it), k = personKey(p);
       if (!map[k]) { map[k] = { person: p, items: [] }; order.push(k); }
-      map[k].items.push(Object.assign({ no: i + 1 }, it));
+      map[k].items.push(it);
     });
     return order.map(function (k) { return map[k]; });
   }
+  function chunk(arr, n) { var out = []; for (var i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n)); return out.length ? out : [[]]; }
   function filledItems() { return state.items.filter(function (it) { return (it.name || "").trim(); }); }
-  function itemLabel(it) { return it.name + (it.feature ? "(" + it.feature + ")" : ""); }
-  function title(rank) { return ["경위", "경감", "경정", "총경"].indexOf(rank) >= 0 ? "사법경찰관" : "사법경찰리"; }
+  function itemText(it) { return esc(it.name) + (it.feature ? " (" + esc(it.feature) + ")" : ""); }
+  function isWaiver(text) { return /포기/.test(text || ""); }
 
   function draftNarrative(s) {
     s = s || state;
     var jo = s.jo, its = s.items.filter(function (it) { return (it.name || "").trim(); });
     var h = its.length ? its[0].holder : blankPerson();
-    var list = its.map(function (it) { return it.name + " " + (it.qty || ""); }).join(", ") || "별지 목록의 물건";
+    var list = its.map(function (it) { return it.name + " " + (it.qty || ""); }).join(", ").trim() || "별지 목록의 물건";
     var who = title(jo.officer.rank) + " " + jo.officer.rank + " " + (jo.officer.name || "○○○");
     var part = title(jo.part.rank) + " " + jo.part.rank + " " + (jo.part.name || "○○○");
-    var when = fmtDateTime(jo.datetime) || "20　.　.　.　:　경", where = jo.place || "○○";
-    var base = {
-      "임의제출": "피의자 " + (jo.suspect.name || "○○○") + "은(는) " + when + " " + where + "에서 " + list +
-        "을(를) 소지하고 있던 중 " + who + "의 질문에 위 물건을 " + (jo.crime || "○○") + "한 것이라는 취지로 진술하고, " +
-        "위 물건을 임의로 제출하겠다는 의사를 표시하였다.\n\n이에 " + who + "은(는) " + part + "을(를) 참여하게 하고, " +
-        "제출자 " + (h.name || "○○○") + "에게 제출을 거부할 수 있고 제출한 물건은 돌려받기 어려울 수 있음을 고지한 후 " +
-        "자발적인 제출 의사를 확인하고 형사소송법 제218조에 따라 위 물건을 영장 없이 압수하였다.",
-      "유류물": when + " " + where + "에서 발견된 유류물 " + list + "을(를) " + who + "이(가) " + part +
-        "을(를) 참여하게 하고 형사소송법 제218조에 따라 영장 없이 압수하였다.",
-      "영장": who + "은(는) " + part + "을(를) 참여하게 하고, " + when + " " + where + "에서 압수·수색영장을 제시한 후 " +
-        "형사소송법 제215조에 따라 " + list + "을(를) 압수하였다.",
-      "현행범체포현장": who + "은(는) " + when + " " + where + "에서 피의자 " + (jo.suspect.name || "○○○") +
-        "을(를) 체포하면서 " + part + "을(를) 참여하게 하고 형사소송법 제216조 제1항 제2호에 따라 체포현장에서 " +
-        list + "을(를) 영장 없이 압수하였다.",
-      "긴급압수": who + "은(는) " + when + " 범행 중 또는 범행 직후의 범죄장소인 " + where + "에서 긴급을 요하여 " +
-        part + "을(를) 참여하게 하고 형사소송법 제216조 제3항에 따라 " + list + "을(를) 영장 없이 압수하였다. (사후 지체 없이 영장 청구)"
+    var when = fmtDT(jo.datetime) || "0000. 00. 00. 00:00", where = jo.place || "○○○○";
+    var sus = jo.suspect || "○○○";
+    var t = {
+      "임의제출": "피의자 " + sus + josa(sus, "은", "는") + " " + when + "경 " + where + "에서 " + list + josa(list, "을", "를") +
+        " 소지하고 있던 중 " + who + "의 질문에 위 물건을 " + (jo.crime || "○○") + "한 것이라는 취지로 진술하고, " +
+        "위 물건을 임의로 제출하겠다는 의사를 표시하였다.\n\n이에 " + who + josa(who, "은", "는") + " " + part + josa(part, "을", "를") +
+        " 참여하게 하고, 제출자 " + (h.name || "○○○") + "에게 물건의 제출을 거부할 수 있고 특정한 범위를 정하여 제출할 수 있음을 고지한 후 " +
+        "자발적인 제출 의사를 확인하고, 형사소송법 제218조에 따라 위 물건을 영장 없이 압수하다.",
+      "유류물": when + "경 " + where + "에서 발견된 유류물 " + list + josa(list, "을", "를") + " " + who + josa(who, "이", "가") + " " +
+        part + josa(part, "을", "를") + " 참여하게 하고 형사소송법 제218조에 따라 영장 없이 압수하다.",
+      "영장": who + josa(who, "은", "는") + " " + part + josa(part, "을", "를") + " 참여하게 하고, " + when + "경 " + where +
+        "에서 압수·수색영장을 제시한 후 형사소송법 제215조에 따라 " + list + josa(list, "을", "를") + " 압수하다.",
+      "현행범체포현장": who + josa(who, "은", "는") + " " + when + "경 " + where + "에서 피의자 " + sus + josa(sus, "을", "를") +
+        " 체포하면서 " + part + josa(part, "을", "를") + " 참여하게 하고 형사소송법 제216조 제1항 제2호에 따라 체포현장에서 " +
+        list + josa(list, "을", "를") + " 영장 없이 압수하다.",
+      "긴급압수": who + josa(who, "은", "는") + " " + when + "경 범행 중 또는 범행 직후의 범죄장소인 " + where + "에서 긴급을 요하여 " +
+        part + josa(part, "을", "를") + " 참여하게 하고 형사소송법 제216조 제3항에 따라 " + list + josa(list, "을", "를") +
+        " 영장 없이 압수하다. (사후 지체 없이 영장 청구)"
     };
-    return base[jo.method] || base["임의제출"];
+    return t[jo.method] || t["임의제출"];
   }
 
-  // ---------- 서식 렌더링 ----------
-  function signBlock(lines) {
-    return '<div class="sign">' + lines.map(function (l) {
-      return "<div><span>" + l + '</span><span class="seal">(인)</span></div>';
-    }).join("") + "</div>";
-  }
-  function officerLine(p) { return esc(title(p.rank)) + "　" + esc(p.rank) + "　" + v(p.name, "○○○"); }
+  // ---------- 서식 ----------
+  var FOOT = '<div class="foot">210㎜ × 297㎜(백상지 80g/㎡)</div>';
+  function caseWord() { return state.jo.caseType === "혐의" ? "혐의" : "피의"; }
 
+  // 경찰수사규칙 별지 제66호서식 압수조서
   function docJo() {
-    var jo = state.jo;
-    var intro = "피의자 " + v(jo.suspect.name, "○○○") + "에 대한 " + v(jo.crime, "○○") + " 피의사건에 관하여 " +
-      v(fmtDateTime(jo.datetime), "20　.　.　.") + " " + v(jo.place, "○○") + "에서 " + officerLine(jo.officer) +
-      "은(는) " + officerLine(jo.part) + "을(를) 참여하게 하고, 별지 목록의 물건을 다음과 같이 압수한다.";
-    return page("■ 경찰수사규칙 [별지 제66호서식]", "압 수 조 서",
-      '<p class="body-text">' + intro + "</p>" +
-      '<table style="margin-bottom:4mm"><tr><th style="width:22%">압 수 경 위</th></tr></table>' +
-      '<div class="box">' + v(jo.narrative, "압수 경위를 입력하세요.") + "</div>" +
-      '<table style="margin-top:4mm"><tr><th rowspan="2" style="width:14%">참여인</th><th style="width:14%">성 명</th><th style="width:22%">주민등록번호</th><th>주 소</th><th style="width:14%">서명 또는 날인</th></tr>' +
-      '<tr class="empty-row"><td class="c">' + v(itemHolderName()) + '</td><td class="c">' + v(itemHolder().rrn) + "</td><td>" + v(itemHolder().addr) + "</td><td></td></tr></table>" +
-      '<div class="date">' + fmtDate(jo.writeDate) + "</div>" +
-      '<div class="c" style="margin-bottom:4mm">' + v(jo.agency, "○○경찰서") + "</div>" +
-      signBlock([officerLine(jo.officer), officerLine(jo.part)]));
+    var jo = state.jo, o = jo.officer, p = jo.part;
+    var lead = v(suspects(), "000외 0명") + "에 대한 " + v(jo.crime, "죄명") + " " + caseWord() +
+      "사건에 관하여 " + v(fmtDT(jo.datetime), "0000. 00. 00. 00:00") + " " + v(jo.place, "○○○○○") + "에서 " +
+      title(o.rank) + " " + esc(o.rank) + " " + v(o.name, "000") + josa(o.name || "000", "은", "는") + " " +
+      title(p.rank) + " " + esc(p.rank) + " " + v(p.name, "000") + josa(p.name || "000", "을", "를") +
+      " 참여하게 하고, 별지 목록의 물건을 다음과 같이 압수하다.";
+    var wit = jo.witnesses.map(function (w) {
+      return "<tr><td class='c'>" + esc(w.name) + "</td><td class='c'>" + esc(w.rrn) + "</td><td>" + esc(w.addr) + "</td><td></td></tr>";
+    }).join("");
+    return '<div class="page p66"><div class="formno">■ 경찰수사규칙 [별지 제66호서식]</div>' +
+      "<h2>압 수 조 서</h2>" +
+      '<p class="lead">' + lead + "</p>" +
+      '<div class="bar">압수경위</div>' +
+      '<div class="narr">' + v(jo.narrative, "") + "</div>" +
+      '<table class="open wt"><colgroup><col style="width:7%"><col style="width:14%"><col style="width:24%"><col><col style="width:15%"></colgroup>' +
+      "<tr><td rowspan='4' class='c' style='line-height:1.5'>참<br>여<br>인</td><th>성　명</th><th>주민등록번호</th><th>주　　　소</th><th class='small'>서명 또는 날인</th></tr>" +
+      wit + "</table>" +
+      '<div class="when">' + v(fmtD(jo.writeDate), "0000. 00. 00.") + "</div>" +
+      '<div class="agency">' + v(jo.agency, "소속관서") + "</div>" +
+      '<div class="signs">' + title(o.rank) + "　" + esc(o.rank) + "　" + v(o.name, "작성자") + '<span class="seal">㊞</span><br>' +
+      title(p.rank) + "　" + esc(p.rank) + "　" + v(p.name, "작성자") + '<span class="seal">㊞</span></div>' +
+      FOOT + "</div>";
   }
-  function itemHolder() { var f = filledItems(); return f.length ? f[0].holder : blankPerson(); }
-  function itemHolderName() { return itemHolder().name; }
 
+  // 경찰수사규칙 별지 제67호서식 압수목록 (1쪽 6건)
   function docMok() {
-    var rows = filledItems().map(function (it, i) {
-      var o = ownerOf(it);
-      return "<tr><td class='c'>" + (i + 1) + "</td><td>" + esc(itemLabel(it)) + "</td><td class='c'>" + esc(it.qty) +
-        "</td><td>" + v(it.holder.addr, "") + "<br>" + v(it.holder.name, "") + (it.holder.phone ? "<br>(" + esc(it.holder.phone) + ")" : "") +
-        "</td><td>" + v(o.addr, "") + "<br>" + v(o.name, "미상") + (o.phone ? "<br>(" + esc(o.phone) + ")" : "") +
-        "</td><td>" + esc(it.opinion) + "</td><td>" + esc(it.note) + "</td></tr>";
-    });
-    while (rows.length < 8) rows.push("<tr class='empty-row'><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
-    return page("■ 경찰수사규칙 [별지 제67호서식]", "압 수 목 록",
-      "<table><colgroup><col style='width:6%'><col style='width:20%'><col style='width:8%'><col style='width:22%'><col style='width:22%'><col style='width:12%'><col style='width:10%'></colgroup>" +
-      "<tr><th rowspan='2'>번호</th><th rowspan='2'>품 종</th><th rowspan='2'>수량</th><th>소지자 또는 제출자</th><th>소 유 자</th><th rowspan='2'>경찰<br>의견</th><th rowspan='2'>비고</th></tr>" +
-      "<tr><th>주소 · 성명</th><th>주소 · 성명</th></tr>" + rows.join("") + "</table>" +
-      '<p class="note">압수일시: ' + v(fmtDateTime(state.jo.datetime)) + "　/　압수장소: " + v(state.jo.place) + "</p>" +
-      '<div class="date">' + fmtDate(state.jo.writeDate) + "</div>" +
-      signBlock([officerLine(state.jo.officer)]));
+    var FIELDS = [["성 명", "name"], ["주 소", "addr"], ["주민등록번호", "rrn"], ["전화번호", "phone"]];
+    return chunk(filledItems(), 6).map(function (page, pi) {
+      var bodies = [];
+      for (var i = 0; i < 6; i++) {
+        var it = page[i], no = pi * 6 + i + 1;
+        var h = it ? it.holder : blankPerson(), ow = it ? ownerOf(it) : blankPerson();
+        bodies.push("<tbody class='it'>" + FIELDS.map(function (f, r) {
+          var head = r ? "" : "<td rowspan='4' class='c'>" + (it ? no : "") + "</td><td rowspan='4'>" +
+            (it ? esc(it.name) + (it.feature ? '<br><span class="small">(' + esc(it.feature) + ")</span>" : "") : "") +
+            "</td><td rowspan='4' class='c'>" + (it ? esc(it.qty) : "") + "</td>";
+          var tail = r ? "" : "<td rowspan='4' class='small'>" + (it ? esc(it.opinion) : "") + "</td><td rowspan='4' class='small'>" + (it ? esc(it.note) : "") + "</td>";
+          return "<tr class='row'>" + head + "<td class='lb'>" + f[0] + "</td><td class='vl'>" + esc(h[f[1]]) +
+            "</td><td class='lb'>" + f[0] + "</td><td class='vl'>" + esc(ow[f[1]]) + "</td>" + tail + "</tr>";
+        }).join("") + "</tbody>");
+      }
+      return '<div class="page p67"><div class="formno">■ 경찰수사규칙 [별지 제67호서식]</div><h2>압 수 목 록</h2>' +
+        "<table><colgroup><col style='width:6%'><col style='width:12%'><col style='width:6%'><col style='width:13mm'><col><col style='width:13mm'><col><col style='width:8%'><col style='width:6%'></colgroup>" +
+        "<thead><tr><th>번호</th><th>품　종</th><th>수량</th><th colspan='2'>소지자 또는 제출자</th><th colspan='2'>소 유 자</th><th class='small'>경찰의견</th><th>비고</th></tr></thead>" +
+        bodies.join("") + "</table>" + FOOT + "</div>";
+    }).join("");
   }
 
+  // 경찰수사규칙 별지 제68호서식 압수목록 교부서 (피압수자별, 1쪽 17건)
   function docGyobu() {
     var jo = state.jo;
     var groups = groupBy(filledItems(), function (it) { return it.holder; });
     if (!groups.length) groups = [{ person: blankPerson(), items: [] }];
     return groups.map(function (g) {
-      var rows = g.items.map(function (it, i) {
-        return "<tr><td class='c'>" + (i + 1) + "</td><td>" + esc(itemLabel(it)) + "</td><td class='c'>" + esc(it.qty) + "</td><td>" + esc(it.note) + "</td></tr>";
-      });
-      while (rows.length < 6) rows.push("<tr class='empty-row'><td></td><td></td><td></td><td></td></tr>");
-      return page("■ 경찰수사규칙 [별지 제68호서식]", "압수목록 교부서",
-        "<table style='margin-bottom:6mm'><tr><th style='width:18%'>수　신</th><td>" + v(g.person.name, "○○○") + " 귀하</td></tr>" +
-        "<tr><th>제　목</th><td>압수목록 교부</td></tr></table>" +
-        '<p class="body-text">' + v(jo.suspect.name, "○○○") + "에 대한 " + v(jo.crime, "○○") + " 피의사건에 관하여 " +
-        v(fmtDateTime(jo.datetime)) + " " + v(jo.place) + "에서 귀하로부터 다음 물건을 압수하였으므로 이에 압수목록을 교부합니다.</p>" +
-        "<table><colgroup><col style='width:10%'><col style='width:50%'><col style='width:15%'><col style='width:25%'></colgroup>" +
-        "<tr><th>연번</th><th>품 종</th><th>수 량</th><th>비 고</th></tr>" + rows.join("") + "</table>" +
-        '<div class="date">' + fmtDate(jo.writeDate) + "</div>" +
-        '<div class="c" style="margin-bottom:4mm">' + v(jo.agency, "○○경찰서") + "</div>" +
-        signBlock([officerLine(jo.officer)]) +
-        "<table style='margin-top:10mm'><tr><th colspan='3'>수 령 확 인</th></tr>" +
-        "<tr><th style='width:20%'>수령일시</th><td>" + v(fmtDateTime(jo.datetime)) + "</td><td rowspan='2' style='width:30%' class='c'>수령인　　　　　(서명)</td></tr>" +
-        "<tr><th>수 령 인</th><td>" + v(g.person.name) + "</td></tr></table>");
+      var holder = g.person.name;
+      return chunk(g.items, 17).map(function (page, pi) {
+        var rows = [];
+        for (var i = 0; i < 17; i++) {
+          var it = page[i];
+          rows.push(it ? "<tr><td class='c'>" + (pi * 17 + i + 1) + "</td><td>" + itemText(it) +
+            "</td><td class='c'>" + esc(it.qty) + "</td><td>" + esc(it.note) + "</td></tr>" : "<tr><td></td><td></td><td></td><td></td></tr>");
+        }
+        return '<div class="page p68"><div class="formno">■ 경찰수사규칙 [별지 제68호서식]</div>' +
+          "<h2>" + v(jo.agency, "소속관서") + "</h2>" +
+          '<div class="meta"><span>제 ' + v(jo.docNo, "0000-00000") + " 호</span><span>" + v(fmtD(jo.writeDate), "0000. 00. 00.") + "</span></div>" +
+          '<div class="line">수 신 : ' + v(holder, "수신자") + "</div>" +
+          '<div class="line">제 목 : 압수목록 교부서</div>' +
+          '<p class="lead">' + v(suspects(), "○○○") + "에 대한 " + v(jo.crime, "○○○○") + " " + caseWord() +
+          "사건에 관하여 " + v(holder, "○○○") + josa(holder || "○", "으로", "로") + "부터 다음 물건을 압수하였으므로 이에 압수목록을 교부합니다.</p>" +
+          "<table class='open'><colgroup><col style='width:8%'><col><col style='width:14%'><col style='width:22%'></colgroup>" +
+          "<tr><th>연번</th><th>품　　　　종</th><th>수　량</th><th>비　　고</th></tr>" + rows.join("") + "</table>" +
+          '<div class="agency">' + v(jo.agency, "소속관서") + "</div>" +
+          '<div class="sign">' + title(jo.officer.rank) + "　" + esc(jo.officer.rank) + "　" + v(jo.officer.name, "") + "</div>" +
+          FOOT + "</div>";
+      }).join("");
     }).join("");
   }
 
+  function whoTable(p) {
+    return "<table class='who'><tr><td class='lb'>성명</td><td>" + esc(p.name) + "</td><td class='lb2'>주민등록번호</td><td style='width:32%'>" + esc(p.rrn) + "</td></tr>" +
+      "<tr><td class='lb'>직업</td><td>" + esc(p.job) + "</td><td class='lb2'>연 락 처</td><td>" + esc(p.phone) + "</td></tr>" +
+      "<tr><td class='lb'>주거</td><td colspan='3'>" + esc(p.addr) + "</td></tr></table>";
+  }
+
+  // 범죄수사규칙 별지 제62호서식 임의제출 (제출자별, 1쪽 8건)
   function docImui() {
     var jo = state.jo;
-    if (jo.method !== "임의제출") return voidPage("임의제출서", "압수조서의 압수 근거가 '임의제출'이 아니므로 작성하지 않습니다.");
+    if (jo.method !== "임의제출") return voidPage("임 의 제 출", "압수조서의 압수 근거가 '임의제출'이 아니므로 작성하지 않습니다.");
     var groups = groupBy(filledItems(), function (it) { return it.holder; });
     if (!groups.length) groups = [{ person: blankPerson(), items: [] }];
     return groups.map(function (g) {
-      var p = g.person;
-      var rows = g.items.map(function (it, i) {
-        var o = ownerOf(it);
-        return "<tr><td class='c'>" + (i + 1) + "</td><td>" + esc(itemLabel(it)) + "</td><td class='c'>" + esc(it.qty) +
-          "</td><td>" + v(o.name, "미상") + "</td><td>" + esc(it.note) + "</td></tr>";
-      });
-      while (rows.length < 5) rows.push("<tr class='empty-row'><td></td><td></td><td></td><td></td><td></td></tr>");
-      return page("", "임 의 제 출 서",
-        "<table><colgroup><col style='width:12%'><col style='width:14%'><col><col style='width:14%'><col style='width:24%'></colgroup>" +
-        "<tr><th rowspan='3'>제출자</th><th>성　명</th><td>" + v(p.name) + "</td><th>주민등록번호</th><td>" + v(p.rrn) + "</td></tr>" +
-        "<tr><th>주　소</th><td colspan='3'>" + v(p.addr) + "</td></tr>" +
-        "<tr><th>전화번호</th><td>" + v(p.phone) + "</td><th>제출일시</th><td>" + v(fmtDateTime(jo.datetime)) + "</td></tr>" +
-        "<tr><th>제출장소</th><td colspan='4'>" + v(jo.place) + "</td></tr></table>" +
-        "<p style='margin:5mm 0 2mm;font-weight:bold'>제출 물건</p>" +
-        "<table><colgroup><col style='width:8%'><col style='width:42%'><col style='width:12%'><col style='width:18%'><col style='width:20%'></colgroup>" +
-        "<tr><th>번호</th><th>품 종</th><th>수량</th><th>소유자</th><th>비 고</th></tr>" + rows.join("") + "</table>" +
-        "<p style='margin:5mm 0 2mm;font-weight:bold'>압수물 처분에 관한 의견 <span style='font-weight:normal;font-size:9pt'>(제출자가 직접 표시)</span></p>" +
-        "<table><tr><td class='c ck'>□ 반환(환부)받기를 원함　　□ 가환부를 원함　　□ 소유권을 포기함　　□ 기타(　　　　)</td></tr></table>" +
-        '<p class="body-text" style="margin-top:6mm">본인은 위 물건을 ' + esc(title(jo.officer.rank)) + " " + esc(jo.officer.rank) + " " + v(jo.officer.name, "○○○") +
-        "에게 자유로운 의사에 따라 임의로 제출합니다. 제출을 거부할 수 있다는 사실을 고지받았습니다.</p>" +
-        '<div class="date">' + fmtDate(jo.writeDate) + "</div>" +
-        signBlock(["제출자　" + v(p.name, "○○○")]) +
-        '<div class="to">' + v(jo.chief || (jo.agency ? jo.agency + "장" : ""), "○○경찰서장") + " 귀하</div>");
+      return chunk(g.items, 8).map(function (page, pi) {
+        var rows = [];
+        for (var i = 0; i < 8; i++) {
+          var it = page[i];
+          rows.push(it ? "<tr><td class='c'>" + (pi * 8 + i + 1) + "</td><td>" + itemText(it) +
+            "</td><td class='c'>" + esc(it.qty) + "</td><td class='c'>" + esc(it.disposal) + "</td><td>" + esc(it.note) + "</td></tr>"
+            : "<tr><td></td><td></td><td></td><td></td><td></td></tr>");
+        }
+        return '<div class="page p62"><div class="formno">■ 범죄수사규칙 [별지 제62호 서식]</div><h2>임 의 제 출</h2>' +
+          '<div class="sec">[ 제 출 자 ]</div>' + whoTable(g.person) +
+          '<p class="stmt">본인은 다음 물건을 임의로 제출하며, 물건의 제출을 거부할 수 있고 특정한 범위를 정하여 제출할 수 있음을 사전에 고지받았음을 확인합니다. 사건처리 후에는 처분의견란 기재와 같이 처분해 주시기 바랍니다.</p>' +
+          '<div class="when">' + v(fmtD(jo.writeDate), "0000. 00. 00.") + "</div>" +
+          '<div class="by">제 출 자 : ' + v(g.person.name, "제출자") + '<span class="seal">㊞</span></div>' +
+          '<div class="sec">[ 제출물건 ]</div>' +
+          "<table class='tb'><colgroup><col style='width:7%'><col><col style='width:9%'><col style='width:23%'><col style='width:17%'></colgroup>" +
+          "<tr><th>연번</th><th>품　　　종</th><th>수량</th><th class='small' style='line-height:1.3'>제출자의 처분의견<br>(반환의사 유무)</th><th>비 고</th></tr>" +
+          rows.join("") + "</table>" +
+          '<div class="to"><b>' + v(chief(), "소속관서장") + "</b> 귀하</div>" + FOOT + "</div>";
+      }).join("");
     }).join("");
   }
 
+  // 범죄수사규칙 별지 제60호서식 소유권 포기서 (소유자별, 1쪽 9건)
   function docPogi() {
     var jo = state.jo;
     var waived = filledItems().filter(function (it) { return it.waive; });
-    if (!waived.length) return voidPage("소유권포기서", "압수목록에서 '소유권 포기' 표시된 압수물이 없으므로 작성하지 않습니다.");
+    if (!waived.length) return voidPage("소유권 포기서", "압수목록에서 '소유권 포기'로 표시된 압수물이 없으므로 작성하지 않습니다.");
     return groupBy(waived, ownerOf).map(function (g) {
-      var p = g.person;
-      var rows = g.items.map(function (it, i) {
-        return "<tr><td class='c'>" + (i + 1) + "</td><td>" + esc(itemLabel(it)) + "</td><td class='c'>" + esc(it.qty) + "</td><td>" + esc(it.note) + "</td></tr>";
-      });
-      while (rows.length < 5) rows.push("<tr class='empty-row'><td></td><td></td><td></td><td></td></tr>");
-      return page("", "소 유 권 포 기 서",
-        "<table><colgroup><col style='width:12%'><col style='width:14%'><col><col style='width:14%'><col style='width:24%'></colgroup>" +
-        "<tr><th rowspan='3'>포기자<br>(소유자)</th><th>성　명</th><td>" + v(p.name) + "</td><th>주민등록번호</th><td>" + v(p.rrn) + "</td></tr>" +
-        "<tr><th>주　소</th><td colspan='3'>" + v(p.addr) + "</td></tr>" +
-        "<tr><th>전화번호</th><td colspan='3'>" + v(p.phone) + "</td></tr></table>" +
-        "<p style='margin:5mm 0 2mm;font-weight:bold'>포기 물건</p>" +
-        "<table><colgroup><col style='width:10%'><col style='width:50%'><col style='width:15%'><col style='width:25%'></colgroup>" +
-        "<tr><th>번호</th><th>품 종</th><th>수 량</th><th>비 고</th></tr>" + rows.join("") + "</table>" +
-        '<p class="body-text" style="margin-top:6mm">본인은 피의자 ' + v(jo.suspect.name, "○○○") + "에 대한 " + v(jo.crime, "○○") + " 피의사건과 관련하여 " +
-        v(fmtDateTime(jo.datetime)) + " " + v(jo.place) + "에서 압수된 위 물건이 본인의 소유임을 확인하고, " +
-        "위 물건에 대한 소유권을 포기하며 향후 그 처분에 관하여 어떠한 이의도 제기하지 않겠습니다.</p>" +
-        '<div class="date">' + fmtDate(jo.writeDate) + "</div>" +
-        signBlock(["포기자　" + v(p.name, "○○○")]) +
-        '<div class="to">' + v(jo.chief || (jo.agency ? jo.agency + "장" : ""), "○○경찰서장") + " 귀하</div>");
+      return chunk(g.items, 9).map(function (page, pi) {
+        var rows = [];
+        for (var i = 0; i < 9; i++) {
+          var it = page[i];
+          rows.push(it ? "<tr><td class='c'>" + (pi * 9 + i + 1) + "</td><td>" + itemText(it) +
+            "</td><td class='c'>" + esc(it.qty) + "</td><td>" + esc(it.note) + "</td></tr>" : "<tr><td></td><td></td><td></td><td></td></tr>");
+        }
+        return '<div class="page p60"><div class="formno">■ 범죄수사규칙 [별지 제60호서식]</div><h2>소유권 포기서</h2>' +
+          '<div class="sec">【 소유권 포기인 】</div>' + whoTable(g.person) +
+          '<p class="stmt">다음 물건에 대한 소유권을 포기합니다.</p>' +
+          '<div class="when">' + v(fmtD(jo.writeDate), "0000. 00. 00.") + "</div>" +
+          '<div class="by">포 기 인 : ' + v(g.person.name, "") + '<span class="seal">㊞</span></div>' +
+          "<table class='tb'><colgroup><col style='width:14%'><col style='width:18%'><col style='width:14%'><col style='width:18%'><col style='width:14%'><col></colgroup>" +
+          "<tr><td class='c'>피 의 자</td><td colspan='5'>" + esc(suspects()) + "</td></tr>" +
+          "<tr><td class='c'>죄　　명</td><td colspan='5'>" + esc(jo.crime) + "</td></tr>" +
+          "<tr><td class='c'>압수번호</td><td>" + esc(jo.seizureNo) + "</td><td class='c'>접수번호</td><td>" + esc(jo.receiptNo) +
+          "</td><td class='c'>사건번호</td><td>" + esc(jo.caseNo) + "</td></tr></table>" +
+          "<table class='tb'><colgroup><col style='width:7%'><col><col style='width:11%'><col style='width:36%'></colgroup>" +
+          "<tr><th style='border-top:none'>연번</th><th style='border-top:none'>품　　　종</th><th style='border-top:none'>수 량</th><th style='border-top:none'>비　　고</th></tr>" +
+          rows.join("") + "</table>" +
+          '<div class="to"><b>' + v(chief(), "소속관서장") + "</b> 귀하</div>" + FOOT + "</div>";
+      }).join("");
     }).join("");
   }
 
-  function page(formNo, heading, inner) {
-    return '<div class="page">' + (formNo ? '<div class="form-no">' + formNo + "</div>" : '<div class="form-no">&nbsp;</div>') +
-      "<h2>" + heading + "</h2>" + inner + "</div>";
-  }
   function voidPage(name, why) {
-    return '<div class="page void"><div class="form-no">&nbsp;</div><h2>' + esc(name) + '</h2><p class="c" style="margin-top:40mm">' + esc(why) + "</p></div>";
+    return '<div class="page void"><h2>' + esc(name) + "</h2><p>" + esc(why) + "</p></div>";
   }
 
   var DOCS = [
-    { id: "jo", name: "압수조서", kind: "직접", render: docJo },
-    { id: "mok", name: "압수목록", kind: "직접", render: docMok },
-    { id: "gyobu", name: "압수목록 교부서", kind: "자동", render: docGyobu },
-    { id: "imui", name: "임의제출서", kind: "자동", render: docImui },
-    { id: "pogi", name: "소유권포기서", kind: "자동", render: docPogi }
+    { id: "jo", name: "압수조서", kind: "직접", src: "경찰수사규칙 별지 제66호서식", render: docJo },
+    { id: "mok", name: "압수목록", kind: "직접", src: "경찰수사규칙 별지 제67호서식", render: docMok },
+    { id: "gyobu", name: "압수목록 교부서", kind: "자동", src: "경찰수사규칙 별지 제68호서식", render: docGyobu },
+    { id: "imui", name: "임의제출", kind: "자동", src: "범죄수사규칙 별지 제62호서식", render: docImui },
+    { id: "pogi", name: "소유권 포기서", kind: "자동", src: "범죄수사규칙 별지 제60호서식", render: docPogi }
   ];
 
   // ---------- 검증 ----------
   function warnings() {
     var w = [], jo = state.jo, items = filledItems();
-    if (!jo.suspect.name) w.push("압수조서: 피의자 성명이 비어 있습니다.");
+    if (!jo.agency) w.push("압수조서: 소속관서가 비어 있습니다.");
+    if (!jo.suspect) w.push("압수조서: 피의자 성명이 비어 있습니다.");
     if (!jo.crime) w.push("압수조서: 죄명이 비어 있습니다.");
     if (!jo.datetime) w.push("압수조서: 압수일시가 비어 있습니다.");
     if (!jo.place) w.push("압수조서: 압수장소가 비어 있습니다.");
     if (!jo.officer.name) w.push("압수조서: 압수자 성명이 비어 있습니다.");
-    if (!jo.part.name) w.push("압수조서: 참여자 성명이 비어 있습니다.");
+    if (!jo.part.name) w.push("압수조서: 참여 경찰관 성명이 비어 있습니다.");
+    if (title(jo.officer.rank) !== "사법경찰관") w.push("압수조서 서식상 압수자는 사법경찰관(경위 이상)입니다. 압수자 계급을 확인하세요.");
     if (!items.length) w.push("압수목록: 압수물(품종)이 하나도 없습니다.");
     items.forEach(function (it, i) {
       var n = "압수물 " + (i + 1) + "(" + it.name + ")";
+      if (!it.qty) w.push(n + ": 수량이 비어 있습니다.");
       if (!it.holder.name) w.push(n + ": 소지자(제출자) 성명이 비어 있습니다.");
       if (it.waive) {
         var o = ownerOf(it);
-        if (!o.name) w.push(n + ": 소유권 포기 표시가 있으나 소유자 성명이 없습니다.");
+        if (!o.name) w.push(n + ": 소유권 포기로 표시했으나 소유자 성명이 없습니다.");
         if (!it.waiveConfirmed) w.push(n + ": 소유권 포기 의사를 소유자 본인에게 확인했는지 체크하세요.");
-        if (it.ownerSame && /절도|장물|강도|사기|횡령/.test(jo.crime)) {
-          w.push(n + ": 죄명이 '" + jo.crime + "'인데 소지자를 소유자로 보고 소유권 포기를 받으려 합니다. 피해품이면 소유자는 피해자입니다.");
+        if (it.ownerSame && /절도|장물|강도|사기|횡령|점유이탈/.test(jo.crime)) {
+          w.push(n + ": 죄명이 '" + jo.crime + "'인데 소지자를 소유자로 보고 소유권 포기서를 만들고 있습니다. 피해품이면 소유자는 피해자입니다.");
         }
       }
     });
-    if (jo.method === "임의제출" && items.length && !/임의|제출/.test(jo.narrative)) {
-      w.push("압수조서: 압수 근거가 임의제출인데 경위에 임의제출 경위가 보이지 않습니다.");
-    }
     return w;
   }
 
   // ---------- 화면 ----------
   function renderOutTabs() {
-    var el = document.getElementById("outTabs");
     var imuiOff = state.jo.method !== "임의제출";
     var pogiOff = !filledItems().some(function (it) { return it.waive; });
-    el.innerHTML = DOCS.map(function (d) {
+    document.getElementById("outTabs").innerHTML = DOCS.map(function (d) {
       var off = (d.id === "imui" && imuiOff) || (d.id === "pogi" && pogiOff);
       var badge = off ? '<span class="badge off">해당없음</span>' : d.kind === "자동" ? '<span class="badge auto">자동</span>' : '<span class="badge">직접</span>';
       return '<button data-doc="' + d.id + '"' + (d.id === currentDoc ? ' class="on"' : "") + ">" + d.name + badge + "</button>";
     }).join("");
   }
+  function currentDef() { return DOCS.filter(function (x) { return x.id === currentDoc; })[0]; }
   function renderPreview() {
-    var d = DOCS.filter(function (x) { return x.id === currentDoc; })[0];
+    var d = currentDef();
     document.getElementById("preview").innerHTML = d.render();
+    document.getElementById("srcNote").textContent = "서식: " + d.src;
     var w = warnings();
     document.getElementById("warns").innerHTML = w.length
       ? w.map(function (x) { return "<li>⚠ " + esc(x) + "</li>"; }).join("")
@@ -540,34 +621,42 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
     document.querySelectorAll("#in-jo [data-k]").forEach(function (el) {
       var val = getPath(state, el.dataset.k); el.value = val == null ? "" : val;
     });
+    renderWitnesses();
+  }
+  function renderWitnesses() {
+    document.getElementById("witnesses").innerHTML = state.jo.witnesses.map(function (w, i) {
+      return '<div class="grid g3" style="margin-bottom:6px">' +
+        '<label class="f">성명<input data-w="' + i + '" data-p="name" value="' + esc(w.name) + '"></label>' +
+        '<label class="f">주민등록번호<input data-w="' + i + '" data-p="rrn" value="' + esc(w.rrn) + '"></label>' +
+        '<label class="f">주소<input data-w="' + i + '" data-p="addr" value="' + esc(w.addr) + '"></label></div>';
+    }).join("");
   }
 
   function personFields(prefix, p, i) {
-    return '<div class="grid">' +
-      '<label class="f">성명<input data-i="' + i + '" data-p="' + prefix + '.name" value="' + esc(p.name) + '"></label>' +
-      '<label class="f">주민등록번호<input data-i="' + i + '" data-p="' + prefix + '.rrn" value="' + esc(p.rrn) + '"></label>' +
-      '<label class="f full">주소<input data-i="' + i + '" data-p="' + prefix + '.addr" value="' + esc(p.addr) + '"></label>' +
-      '<label class="f">연락처<input data-i="' + i + '" data-p="' + prefix + '.phone" value="' + esc(p.phone) + '"></label></div>';
+    var f = function (k, label, cls) {
+      return '<label class="f' + (cls ? " " + cls : "") + '">' + label + '<input data-i="' + i + '" data-p="' + prefix + "." + k + '" value="' + esc(p[k]) + '"></label>';
+    };
+    return '<div class="grid">' + f("name", "성명") + f("rrn", "주민등록번호") + f("job", "직업") + f("phone", "전화번호(연락처)") + f("addr", "주소(주거)", "full") + "</div>";
   }
   function renderItems() {
-    var box = document.getElementById("items");
-    box.innerHTML = state.items.map(function (it, i) {
+    document.getElementById("items").innerHTML = state.items.map(function (it, i) {
+      var inp = function (k, label, ph, cls, extra) {
+        return '<label class="f' + (cls ? " " + cls : "") + '">' + label + '<input data-i="' + i + '" data-p="' + k + '" value="' + esc(it[k]) + '" placeholder="' + (ph || "") + '"' + (extra || "") + "></label>";
+      };
       return '<div class="item">' +
         '<div class="item-head"><span>압수물 ' + (i + 1) + '</span><span style="display:flex;gap:4px">' +
-        (i > 0 ? '<button data-act="copy" data-i="' + i + '" title="앞 압수물의 소지자·소유자 복사">↑ 인적사항 복사</button>' : "") +
-        (state.items.length > 1 ? '<button class="danger" data-act="del" data-i="' + i + '">삭제</button>' : "") + "</span></div>" +
-        '<div class="grid">' +
-        '<label class="f">품종<input data-i="' + i + '" data-p="name" value="' + esc(it.name) + '" placeholder="예: 자전거"></label>' +
-        '<label class="f">수량<input data-i="' + i + '" data-p="qty" value="' + esc(it.qty) + '" placeholder="예: 1대"></label>' +
-        '<label class="f full">특징(색상·제조사·일련번호 등)<input data-i="' + i + '" data-p="feature" value="' + esc(it.feature) + '"></label>' +
-        '<label class="f">경찰 의견<input data-i="' + i + '" data-p="opinion" value="' + esc(it.opinion) + '" placeholder="예: 피해자 환부"></label>' +
-        '<label class="f">비고<input data-i="' + i + '" data-p="note" value="' + esc(it.note) + '" placeholder="예: 임의제출"></label></div>' +
-        '<div class="sub">소지자 또는 제출자 (피압수자)</div>' + personFields("holder", it.holder, i) +
+        (i > 0 ? '<button class="small" data-act="copy" data-i="' + i + '">↑ 인적사항 복사</button>' : "") +
+        (state.items.length > 1 ? '<button class="small danger" data-act="del" data-i="' + i + '">삭제</button>' : "") + "</span></div>" +
+        '<div class="grid">' + inp("name", "품종", "예: 자전거") + inp("qty", "수량", "예: 1대") +
+        inp("feature", "특징(색상·제조사·일련번호 등)", "", "full") +
+        inp("opinion", "경찰의견", "예: 피해자 환부") + inp("note", "비고", "예: 임의제출") + "</div>" +
+        '<div class="sub">소지자 또는 제출자</div>' + personFields("holder", it.holder, i) +
         '<div class="sub">소유자</div>' +
         '<label class="check"><input type="checkbox" data-i="' + i + '" data-p="ownerSame"' + (it.ownerSame ? " checked" : "") + "> 소지자와 동일인</label>" +
         (it.ownerSame ? "" : personFields("owner", it.owner, i)) +
-        '<div class="sub">소유권포기서</div>' +
-        '<label class="check"><input type="checkbox" data-i="' + i + '" data-p="waive"' + (it.waive ? " checked" : "") + "> 이 압수물은 소유자가 소유권을 포기함 → 소유권포기서 작성</label>" +
+        '<div class="sub">처분 (임의제출·소유권 포기서)</div>' +
+        '<div class="grid">' + inp("disposal", "제출자의 처분의견(반환의사 유무)", "제출자가 밝힌 의견", "full", ' list="disposalList"') + "</div>" +
+        '<label class="check" style="margin-top:6px"><input type="checkbox" data-i="' + i + '" data-p="waive"' + (it.waive ? " checked" : "") + "> 소유자가 소유권을 포기함 → 소유권 포기서 작성</label>" +
         (it.waive ? '<label class="check" style="margin-top:4px"><input type="checkbox" data-i="' + i + '" data-p="waiveConfirmed"' + (it.waiveConfirmed ? " checked" : "") + "> 소유자 본인에게 포기 의사를 직접 확인함</label>" : "") +
         "</div>";
     }).join("");
@@ -575,8 +664,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   function onItemInput(e) {
     var el = e.target; if (el.dataset.i == null || !el.dataset.p) return;
     var it = state.items[+el.dataset.i];
-    var val = el.type === "checkbox" ? el.checked : el.value;
-    setPath(it, el.dataset.p, val);
+    setPath(it, el.dataset.p, el.type === "checkbox" ? el.checked : el.value);
     if (el.type === "checkbox") renderItems();
     refresh();
   }
@@ -585,25 +673,24 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
     document.querySelectorAll("#inTabs button").forEach(function (b) { b.classList.toggle("on", b.dataset.in === tab); });
     document.getElementById("in-jo").hidden = tab !== "jo";
     document.getElementById("in-mok").hidden = tab !== "mok";
-    if (tab === "jo" || tab === "mok") { currentDoc = tab; refresh(); }
+    currentDoc = tab; refresh();
   }
 
   // ---------- 출력 ----------
   function printDocs(ids) {
-    var html = DOCS.filter(function (d) { return ids.indexOf(d.id) >= 0; }).map(function (d) { return d.render(); }).join("");
     var prev = document.getElementById("preview"), keep = prev.innerHTML;
-    prev.innerHTML = html;
+    prev.innerHTML = DOCS.filter(function (d) { return ids.indexOf(d.id) >= 0; }).map(function (d) { return d.render(); }).join("");
     window.print();
     prev.innerHTML = keep;
   }
   function docFileHtml(inner, name) {
-    var css = document.querySelector("style").textContent.replace(/@media print[\s\S]*$/, "");
+    var css = document.querySelector("style").textContent.replace(/@media screen[\s\S]*$/, "");
     return '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
       '<head><meta charset="utf-8"><title>' + esc(name) + "</title><style>" + css +
-      " body{background:#fff} .page{box-shadow:none;margin:0;page-break-after:always} .page.void{display:none}</style></head><body>" + inner + "</body></html>";
+      " body{background:#fff} .page{box-shadow:none;margin:0;page-break-after:always} .page.void{display:none} .blank{color:transparent}</style></head><body>" + inner + "</body></html>";
   }
-  function download(name, content) {
-    var blob = new Blob(["﻿", content], { type: "application/msword" });
+  function download(name, content, type) {
+    var blob = new Blob(["﻿", content], { type: type });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob); a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
@@ -611,7 +698,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   }
   function fileBase() {
     var jo = state.jo, d = (jo.datetime || jo.writeDate || "").slice(0, 10).replace(/-/g, "");
-    return [d, jo.suspect.name].filter(Boolean).join("_") || "압수서류";
+    return [d, jo.suspect].filter(Boolean).join("_") || "압수서류";
   }
 
   // ---------- 이벤트 ----------
@@ -622,8 +709,29 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
     var b = e.target.closest("button"); if (!b) return;
     currentDoc = b.dataset.doc; refresh();
   });
+  document.getElementById("witnesses").addEventListener("input", function (e) {
+    var el = e.target; if (el.dataset.w == null) return;
+    state.jo.witnesses[+el.dataset.w][el.dataset.p] = el.value; refresh();
+  });
+  document.getElementById("btnWitFill").addEventListener("click", function () {
+    var seen = {}, list = [];
+    filledItems().forEach(function (it) {
+      var k = personKey(it.holder);
+      if (it.holder.name && !seen[k]) { seen[k] = 1; list.push({ name: it.holder.name, rrn: it.holder.rrn, addr: it.holder.addr }); }
+    });
+    if (!list.length) { alert("압수목록에 소지자(제출자)가 입력되어 있지 않습니다."); return; }
+    state.jo.witnesses = [0, 1, 2].map(function (i) { return list[i] || blankWitness(); });
+    renderWitnesses(); refresh();
+  });
   var itemsBox = document.getElementById("items");
-  itemsBox.addEventListener("input", onItemInput);
+  itemsBox.addEventListener("input", function (e) {
+    onItemInput(e);
+    // 처분의견에 '포기'를 적으면 소유권 포기서 작성 체크를 켠다
+    if (e.target.dataset.p === "disposal" && isWaiver(e.target.value)) {
+      var it = state.items[+e.target.dataset.i];
+      if (!it.waive) { it.waive = true; renderItems(); refresh(); }
+    }
+  });
   itemsBox.addEventListener("change", function (e) { if (e.target.type === "checkbox") onItemInput(e); });
   itemsBox.addEventListener("click", function (e) {
     var b = e.target.closest("button[data-act]"); if (!b) return;
@@ -639,7 +747,10 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   });
   document.getElementById("btnAddItem").addEventListener("click", function () {
     var it = blankItem(), last = state.items[state.items.length - 1];
-    if (last) { it.holder = Object.assign({}, last.holder); it.owner = Object.assign({}, last.owner); it.ownerSame = last.ownerSame; it.note = last.note; }
+    if (last) {
+      it.holder = Object.assign({}, last.holder); it.owner = Object.assign({}, last.owner);
+      it.ownerSame = last.ownerSame; it.note = last.note;
+    }
     state.items.push(it); renderItems(); refresh();
   });
   document.getElementById("btnDraft").addEventListener("click", function () {
@@ -650,7 +761,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   document.getElementById("btnNew").addEventListener("click", function () {
     if (!confirm("입력한 내용을 모두 지우고 새 사건을 시작할까요?\n(필요하면 먼저 [사건 저장]을 누르세요)")) return;
     var keep = state.jo; state = blankState();
-    ["agency", "dept", "chief"].forEach(function (k) { state.jo[k] = keep[k]; });
+    state.jo.agency = keep.agency; state.jo.chief = keep.chief;
     state.jo.officer = Object.assign({}, keep.officer); state.jo.part = Object.assign({}, keep.part);
     fillStatic(); renderItems(); switchIn("jo");
   });
@@ -659,16 +770,14 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
     state = sampleState(); fillStatic(); renderItems(); switchIn("jo");
   });
   document.getElementById("btnSaveJson").addEventListener("click", function () {
-    var blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
-    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = fileBase() + ".json";
-    document.body.appendChild(a); a.click(); a.remove();
+    download(fileBase() + ".json", JSON.stringify(state, null, 2), "application/json");
   });
   document.getElementById("btnLoadJson").addEventListener("click", function () { document.getElementById("fileJson").click(); });
   document.getElementById("fileJson").addEventListener("change", function (e) {
     var f = e.target.files[0]; if (!f) return;
     var r = new FileReader();
     r.onload = function () {
-      try { state = normalize(JSON.parse(r.result)); fillStatic(); renderItems(); switchIn("jo"); }
+      try { state = normalize(JSON.parse(String(r.result).replace(/^﻿/, ""))); fillStatic(); renderItems(); switchIn("jo"); }
       catch (err) { alert("사건 파일을 읽을 수 없습니다."); }
     };
     r.readAsText(f, "utf-8"); e.target.value = "";
@@ -676,11 +785,11 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   document.getElementById("btnPrint").addEventListener("click", function () { printDocs([currentDoc]); });
   document.getElementById("btnPrintAll").addEventListener("click", function () { printDocs(DOCS.map(function (d) { return d.id; })); });
   document.getElementById("btnDoc").addEventListener("click", function () {
-    var d = DOCS.filter(function (x) { return x.id === currentDoc; })[0];
-    download(fileBase() + "_" + d.name + ".doc", docFileHtml(d.render(), d.name));
+    var d = currentDef();
+    download(fileBase() + "_" + d.name + ".doc", docFileHtml(d.render(), d.name), "application/msword");
   });
   document.getElementById("btnDocAll").addEventListener("click", function () {
-    download(fileBase() + "_압수서류일체.doc", docFileHtml(DOCS.map(function (d) { return d.render(); }).join(""), "압수서류 일체"));
+    download(fileBase() + "_압수서류일체.doc", docFileHtml(DOCS.map(function (d) { return d.render(); }).join(""), "압수서류 일체"), "application/msword");
   });
 
   bindStatic(); fillStatic(); renderItems(); refresh();
