@@ -238,14 +238,19 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
     <div class="preview-bar">
       <button class="primary" id="btnPrint">이 서류 인쇄</button>
       <button id="btnPrintAll">전체 인쇄</button>
-      <button id="btnDoc">이 서류 저장(.doc)</button>
-      <button id="btnDocAll">전체 저장(.doc)</button>
+      <button id="btnHwp">이 서류 HWP 저장</button>
+      <button id="btnHwpAll">전체 HWP 저장</button>
+      <span class="hint" id="hwpStatus"></span>
       <span class="src" id="srcNote"></span>
     </div>
     <div class="preview" id="preview"></div>
   </section>
 </main>
 
+<script src="case.js"></script>
+<script src="hwp-fill.js"></script>
+<script src="hwp-templates.js"></script>
+<script src="hwp-forms.js"></script>
 <script>
 (function () {
   "use strict";
@@ -331,41 +336,15 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   }
   // 값이 있으면 그대로, 없으면 서식의 자리표시(회색, 인쇄 시 안 보임)
   function v(x, ph) { return x && String(x).trim() ? esc(x) : '<span class="blank">' + esc(ph || "") + "</span>"; }
-  // 받침에 따라 조사 선택: josa("홍길동", "은", "는") → "은"
-  function josa(word, a, b) {
-    var w = String(word || "").trim(); if (!w) return a;
-    var code = w.charCodeAt(w.length - 1) - 0xAC00;
-    if (code < 0 || code > 11171) return a + "(" + b + ")";
-    var jong = code % 28;
-    if (a === "으로") return jong === 0 || jong === 8 ? b : a;
-    return jong ? a : b;
-  }
-  function fmtDT(dt) {
-    var m = (dt || "").match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
-    if (!m) return "";
-    return m[1] + ". " + m[2] + ". " + m[3] + "." + (m[4] ? " " + m[4] + ":" + m[5] : "");
-  }
-  function fmtD(d) { var m = (d || "").match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? m[1] + ". " + m[2] + ". " + m[3] + "." : ""; }
-  function title(rank) { return ["경위", "경감", "경정", "총경"].indexOf(rank) >= 0 ? "사법경찰관" : "사법경찰리"; }
-  function chief() { var j = state.jo; return j.chief || (j.agency ? j.agency + "장" : ""); }
-  function suspects() {
-    var j = state.jo, n = parseInt(j.suspectOthers, 10);
-    return (j.suspect || "") + (j.suspect && n > 0 ? " 외 " + n + "명" : "");
-  }
-  function ownerOf(it) { return it.ownerSame ? it.holder : it.owner; }
-  function personKey(p) { return (p.name || "").trim() + "|" + (p.rrn || "").trim(); }
-  function groupBy(items, getP) {
-    var map = {}, order = [];
-    items.forEach(function (it) {
-      var p = getP(it), k = personKey(p);
-      if (!map[k]) { map[k] = { person: p, items: [] }; order.push(k); }
-      map[k].items.push(it);
-    });
-    return order.map(function (k) { return map[k]; });
-  }
-  function chunk(arr, n) { var out = []; for (var i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n)); return out.length ? out : [[]]; }
-  function filledItems() { return state.items.filter(function (it) { return (it.name || "").trim(); }); }
-  function itemText(it) { return esc(it.name) + (it.feature ? " (" + esc(it.feature) + ")" : ""); }
+  // 공통 문구 함수는 case.js(CaseUtil)에 있다
+  var U = window.CaseUtil;
+  var josa = U.josa, fmtDT = U.fmtDT, fmtD = U.fmtD, title = U.title, ownerOf = U.ownerOf,
+    personKey = U.personKey, groupBy = U.groupBy, chunk = U.chunk;
+  function chief() { return U.chief(state.jo); }
+  function suspects() { return U.suspects(state.jo); }
+  function caseWord() { return U.caseWord(state.jo); }
+  function filledItems() { return U.filledItems(state); }
+  function itemText(it) { return esc(U.itemText(it)); }
   function isWaiver(text) { return /포기/.test(text || ""); }
 
   function draftNarrative(s) {
@@ -399,7 +378,6 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
 
   // ---------- 서식 ----------
   var FOOT = '<div class="foot">210㎜ × 297㎜(백상지 80g/㎡)</div>';
-  function caseWord() { return state.jo.caseType === "혐의" ? "혐의" : "피의"; }
 
   // 경찰수사규칙 별지 제66호서식 압수조서
   function docJo() {
@@ -683,18 +661,51 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
     window.print();
     prev.innerHTML = keep;
   }
-  function docFileHtml(inner, name) {
-    var css = document.querySelector("style").textContent.replace(/@media screen[\s\S]*$/, "");
-    return '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
-      '<head><meta charset="utf-8"><title>' + esc(name) + "</title><style>" + css +
-      " body{background:#fff} .page{box-shadow:none;margin:0;page-break-after:always} .page.void{display:none} .blank{color:transparent}</style></head><body>" + inner + "</body></html>";
-  }
   function download(name, content, type) {
-    var blob = new Blob(["﻿", content], { type: type });
+    var blob = new Blob(typeof content === "string" ? ["﻿", content] : [content], { type: type });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob); a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  // ---------- HWP 저장: 서식원본(HWP)의 칸에 값을 채워 그대로 .hwp로 내려받는다 ----------
+  function streamBytes(u8, transform) {
+    return new Response(new Blob([u8]).stream().pipeThrough(transform)).arrayBuffer().then(function (b) { return new Uint8Array(b); });
+  }
+  var hwpCodec = {
+    inflateRaw: function (u8) { return streamBytes(u8, new DecompressionStream("deflate-raw")); },
+    deflateRaw: function (u8) { return streamBytes(u8, new CompressionStream("deflate-raw")); }
+  };
+  function hwpSupported() {
+    try { new CompressionStream("deflate-raw"); new DecompressionStream("deflate-raw"); return true; } catch (e) { return false; }
+  }
+  function templateBytes(id) {
+    var bin = atob(window.HWP_TEMPLATES[id]), u8 = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+    return u8;
+  }
+  function setHwpStatus(msg) { document.getElementById("hwpStatus").textContent = msg; }
+  function saveHwp(ids) {
+    if (!hwpSupported()) { alert("이 브라우저는 HWP 저장을 지원하지 않습니다. 최신 Chrome 또는 Edge에서 열어 주세요."); return; }
+    var files = window.HwpForms.plan(state, ids, fileBase());
+    if (!files.length) { alert("작성 대상인 서류가 없습니다. (임의제출·소유권 포기서는 조건에 맞을 때만 만들어집니다)"); return; }
+    setHwpStatus("HWP 만드는 중…");
+    var done = 0;
+    files.reduce(function (chain, f) {
+      return chain.then(function () {
+        return window.HwpFill.fill(templateBytes(f.template), f.edits, hwpCodec);
+      }).then(function (bytes) {
+        download(f.fileName, bytes, "application/x-hwp");
+        done++;
+        return new Promise(function (r) { setTimeout(r, 350); });   // 여러 파일을 연달아 받을 때 브라우저가 놓치지 않게
+      });
+    }, Promise.resolve()).then(function () {
+      setHwpStatus("HWP " + done + "개 저장됨 (다운로드 폴더)");
+    }).catch(function (err) {
+      setHwpStatus("");
+      alert("HWP를 만들지 못했습니다: " + err.message);
+    });
   }
   function fileBase() {
     var jo = state.jo, d = (jo.datetime || jo.writeDate || "").slice(0, 10).replace(/-/g, "");
@@ -784,13 +795,8 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   });
   document.getElementById("btnPrint").addEventListener("click", function () { printDocs([currentDoc]); });
   document.getElementById("btnPrintAll").addEventListener("click", function () { printDocs(DOCS.map(function (d) { return d.id; })); });
-  document.getElementById("btnDoc").addEventListener("click", function () {
-    var d = currentDef();
-    download(fileBase() + "_" + d.name + ".doc", docFileHtml(d.render(), d.name), "application/msword");
-  });
-  document.getElementById("btnDocAll").addEventListener("click", function () {
-    download(fileBase() + "_압수서류일체.doc", docFileHtml(DOCS.map(function (d) { return d.render(); }).join(""), "압수서류 일체"), "application/msword");
-  });
+  document.getElementById("btnHwp").addEventListener("click", function () { saveHwp([currentDoc]); });
+  document.getElementById("btnHwpAll").addEventListener("click", function () { saveHwp(DOCS.map(function (d) { return d.id; })); });
 
   bindStatic(); fillStatic(); renderItems(); refresh();
 })();
