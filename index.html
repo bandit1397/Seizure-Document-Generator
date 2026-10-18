@@ -1,7 +1,9 @@
 <!doctype html>
+<!-- saved from url=(0014)about:internet -->
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>압수서류 자동작성기</title>
 <style>
@@ -144,6 +146,53 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   .page .blank { color: transparent; }
   .p67 th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* ---------- 인터넷 익스플로러 10·11 전용 (다른 브라우저는 이 블록을 읽지 않는다) ----------
+   IE는 CSS 변수(var), grid, flex의 gap을 모르므로 같은 모양을 실제 색값·flex·여백으로 다시 적는다. */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  body { background: #eef0f3; color: #1d2330; }
+  header.top { background: #1f4e8c; color: #ffffff; }
+  header.top h1 { margin: 4px 16px 4px 0; }
+  header.top .btns > * { margin: 3px 6px 3px 0; }
+  button { border: 1px solid #d5dae1; color: #1d2330; }
+  button.primary { background: #1f4e8c; color: #ffffff; border-color: #1f4e8c; }
+  main { display: flex; align-items: flex-start; }
+  main > .panel.inputs { flex: 0 0 440px; width: 440px; }
+  main > .panel + .panel { flex: 1 1 0%; margin-left: 12px; }
+  .panel { background: #ffffff; border: 1px solid #d5dae1; }
+  .tabs { border-bottom: 1px solid #d5dae1; }
+  .tabs button { color: #5f6b7a; }
+  .tabs button.on { color: #1f4e8c; border-bottom-color: #1f4e8c; }
+  .tabs .badge { background: #d5dae1; color: #5f6b7a; }
+  .tabs .badge.auto { background: #e6f4ea; color: #1e6b34; }
+  .form h3 { border-bottom: 1px solid #d5dae1; color: #1f4e8c; }
+  .form h3 button { margin-left: 6px; }
+  .grid { display: flex; flex-wrap: wrap; margin: 0 -5px -8px; }
+  .grid > * { width: 50%; padding: 0 5px; margin-bottom: 8px; }
+  .grid > .full { width: 100%; }
+  .grid.g3 > * { width: 23.26%; }
+  .grid.g3 > :nth-child(2) { width: 30.23%; }
+  .grid.g3 > :nth-child(3) { width: 46.51%; }
+  label.f { color: #5f6b7a; }
+  label.f > input, label.f > select, label.f > textarea { margin-top: 3px; }
+  input, select, textarea { color: #1d2330; background: #f8f9fb; border: 1px solid #d5dae1; }
+  .check { color: #1d2330; }
+  .check input { margin: 0 6px 0 0; }
+  .item { border: 1px solid #d5dae1; }
+  .item-head button { margin-left: 4px; }
+  .sub, .hint { color: #5f6b7a; }
+  #btnDraft { margin-right: 6px; }
+  .warns li { background: #fff4e0; color: #8a5300; }
+  .warns li.ok { background: #e6f4ea; color: #1e6b34; }
+  .preview-bar { border-bottom: 1px solid #d5dae1; }
+  .preview-bar > * { margin: 3px 6px 3px 0; }
+  .preview-bar .src { color: #5f6b7a; margin-left: auto; }
+}
+@media all and (-ms-high-contrast: none) and (max-width: 1000px), (-ms-high-contrast: active) and (max-width: 1000px) {
+  main { display: block; }
+  main > .panel.inputs { width: auto; }
+  main > .panel + .panel { margin-left: 0; margin-top: 12px; }
+}
 </style>
 </head>
 <body>
@@ -184,7 +233,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
 
       <h3>압수 일시·장소·근거</h3>
       <div class="grid">
-        <label class="f">압수일시<input type="datetime-local" data-k="jo.datetime"></label>
+        <label class="f">압수일시<input type="datetime-local" data-k="jo.datetime" placeholder="예: 2026-10-12 12:00"></label>
         <label class="f">압수 근거
           <select data-k="jo.method">
             <option value="임의제출">임의제출 (형사소송법 제218조)</option>
@@ -217,7 +266,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
 
       <h3>작성</h3>
       <div class="grid">
-        <label class="f">작성일<input type="date" data-k="jo.writeDate"></label>
+        <label class="f">작성일<input type="date" data-k="jo.writeDate" placeholder="예: 2026-10-12"></label>
       </div>
     </div>
 
@@ -247,6 +296,8 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   </section>
 </main>
 
+<script src="compat.js"></script>
+<script src="pako.es5.min.js"></script>
 <script src="case.js"></script>
 <script src="hwp-fill.js"></script>
 <script src="hwp-templates.js"></script>
@@ -592,12 +643,25 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
       s.innerHTML = RANKS.map(function (r) { return "<option>" + r + "</option>"; }).join("");
     });
     document.querySelectorAll("#in-jo [data-k]").forEach(function (el) {
-      el.addEventListener("input", function () { setPath(state, el.dataset.k, el.value); refresh(); });
+      el.addEventListener("input", function () { setPath(state, el.dataset.k, fieldValue(el)); refresh(); });
+      // IE는 선택 목록(계급 등)을 바꿀 때 input 이벤트를 보내지 않는다. 값이 그대로면 아무것도 하지 않는다.
+      el.addEventListener("change", function () {
+        var val = fieldValue(el);
+        if (getPath(state, el.dataset.k) !== val) { setPath(state, el.dataset.k, val); refresh(); }
+      });
     });
+  }
+  // 날짜 입력칸이 없는 브라우저(IE)에서는 일반 글자칸이 되므로 "2026-10-12 12:00"도 받아 들인다
+  function fieldValue(el) {
+    if (el.dataset.k === "jo.datetime" && el.type !== "datetime-local") {
+      return el.value.trim().replace(/^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2})$/, "$1T$2");
+    }
+    return el.value;
   }
   function fillStatic() {
     document.querySelectorAll("#in-jo [data-k]").forEach(function (el) {
       var val = getPath(state, el.dataset.k); el.value = val == null ? "" : val;
+      if (el.dataset.k === "jo.datetime" && el.type !== "datetime-local") el.value = el.value.replace("T", " ");
     });
     renderWitnesses();
   }
@@ -663,6 +727,10 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   }
   function download(name, content, type) {
     var blob = new Blob(typeof content === "string" ? ["﻿", content] : [content], { type: type });
+    // IE는 <a download>를 모르므로 IE 전용 저장 기능을 쓴다
+    if (!("download" in document.createElement("a")) && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, name); return;
+    }
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob); a.download = name;
     document.body.appendChild(a); a.click(); a.remove();
@@ -673,13 +741,24 @@ input:focus, select:focus, textarea:focus { outline: 2px solid #9db7dd; backgrou
   function streamBytes(u8, transform) {
     return new Response(new Blob([u8]).stream().pipeThrough(transform)).arrayBuffer().then(function (b) { return new Uint8Array(b); });
   }
-  var hwpCodec = {
+  var nativeCodec = {
     inflateRaw: function (u8) { return streamBytes(u8, new DecompressionStream("deflate-raw")); },
     deflateRaw: function (u8) { return streamBytes(u8, new CompressionStream("deflate-raw")); }
   };
-  function hwpSupported() {
+  // 브라우저에 압축 기능이 없으면(IE, Chrome·Edge 103 이전) 함께 들어 있는 pako(pako.es5.min.js)로 압축한다
+  var pakoCodec = {
+    inflateRaw: function (u8) {
+      var out = window.pako.inflateRaw(u8);
+      if (!out) throw new Error("압축을 풀지 못했습니다.");
+      return out;
+    },
+    deflateRaw: function (u8) { return window.pako.deflateRaw(u8); }
+  };
+  function nativeSupported() {
     try { new CompressionStream("deflate-raw"); new DecompressionStream("deflate-raw"); return true; } catch (e) { return false; }
   }
+  var hwpCodec = nativeSupported() ? nativeCodec : pakoCodec;
+  function hwpSupported() { return hwpCodec === nativeCodec || !!window.pako; }
   function templateBytes(id) {
     var bin = atob(window.HWP_TEMPLATES[id]), u8 = new Uint8Array(bin.length);
     for (var i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
